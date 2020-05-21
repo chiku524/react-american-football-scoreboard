@@ -106,7 +106,7 @@
 }
 
 .buttons {
-  width: 50%;
+  width: 60%;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
@@ -118,4 +118,16 @@
 .awayButtons__fieldGoal {
   margin: 1rem;
   border-radius: 4px;
+}
+
+.additionalButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 5%;
+}
+
+.additionalButtons .btns {
+  display: flex;
+  flex-direction: row;
 }

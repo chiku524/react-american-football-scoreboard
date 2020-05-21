@@ -1,6 +1,7 @@
 //TODO: STEP 1 - Import the useState hook.
 import React, {useState} from "react";
 import BottomRow from "./BottomRow";
+import ValueChanger from "./AdditionalButtons";
 import "./App.css";
 
 function App() {
@@ -8,6 +9,59 @@ function App() {
 
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
+  const [down, setDown] = useState(1);
+  const [toGo, setToGo] = useState(25);
+  const [ballOn, setBallOn] = useState(0);
+  const [quarter, setQuarter] = useState(1);
+  
+  const downPlusOne = () => {
+    setDown(down + 1);
+    if(down===4){
+      setDown(1);
+    }
+  }
+  const toGoMinusOne = () => {
+    setToGo(toGo - 1);
+    if(toGo<=0){
+      setToGo(25)
+    }
+  }
+  const toGoMinusFive = () => {
+    setToGo(toGo - 5);
+    if(toGo<=0){
+      setToGo(25)
+    }
+  }
+  const toGoMinusTen = () => {
+    setToGo(toGo - 10);
+    if(toGo<=0){
+      setToGo(25);
+    }
+  }
+  const ballOnPlusOne = () => {
+    setBallOn(ballOn + 1);
+    if(ballOn>=25){
+      setBallOn(0);
+    }
+  }
+  const ballOnPlusFive = () => {
+    setBallOn(ballOn + 5);
+    if(ballOn>=25){
+      setBallOn(0);
+    }
+  }
+  const ballOnPlusTen = () => {
+    setBallOn(ballOn + 10);
+    if(ballOn>=25){
+      setBallOn(0);
+    }
+  }
+  const quarterPlusOne = () => {
+    setQuarter(quarter + 1);
+    if(quarter===4){
+      setQuarter(1);
+    }
+  }
 
   return (
     <div className="container">
@@ -25,7 +79,7 @@ function App() {
             <div className="away__score">{awayScore}</div>
           </div>
         </div>
-        <BottomRow />
+        <BottomRow down={down} toGo={toGo} ballOn={ballOn} quarter={quarter} />
       </section>
       <section className="buttons">
         <div className="homeButtons">
@@ -37,6 +91,36 @@ function App() {
         <div className="awayButtons">
           <button className="awayButtons__touchdown" onClick={() => setAwayScore(awayScore + 7)}>Away Touchdown</button>
           <button className="awayButtons__fieldGoal" onClick={() => setAwayScore(awayScore + 3)}>Away Field Goal</button>
+        </div>
+      </section>
+      <section className='additionalButtons'>
+        <div className='down'>
+          <h3>DOWN</h3>
+          <div className='btns'>
+            <ValueChanger onValueChange={downPlusOne} label='+1' />
+          </div>
+        </div>
+        <div className='toGo'>
+          <h3>TO GO</h3>
+          <div className='btns'>
+            <ValueChanger onValueChange={toGoMinusOne} label='-1' />
+            <ValueChanger onValueChange={toGoMinusFive} label='-5' />
+            <ValueChanger onValueChange={toGoMinusTen} label='-10' />
+          </div>
+        </div>
+        <div className='ballOn'>
+          <h3>BALL ON</h3>
+          <div className='btns'>
+            <ValueChanger onValueChange={ballOnPlusOne} label='+1' />
+            <ValueChanger onValueChange={ballOnPlusFive} label='+5' />
+            <ValueChanger onValueChange={ballOnPlusTen} label='+10' />
+          </div>
+        </div>
+        <div className='quarter'>
+          <h3>QUARTER</h3>
+          <div className='btns'>
+            <ValueChanger onValueChange={quarterPlusOne} label='+1' />
+          </div>
         </div>
       </section>
     </div>
