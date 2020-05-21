@@ -1,5 +1,5 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import BottomRow from "./BottomRow";
 import ValueChanger from "./AdditionalButtons";
 import "./App.css";
@@ -13,7 +13,10 @@ function App() {
   const [toGo, setToGo] = useState(25);
   const [ballOn, setBallOn] = useState(0);
   const [quarter, setQuarter] = useState(1);
-  
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(60);
+  const [isActive, setIsActive] = useState(false);
+
   const downPlusOne = () => {
     setDown(down + 1);
     if(down===4){
@@ -63,6 +66,39 @@ function App() {
     }
   }
 
+  function toggle() {
+    setIsActive(!isActive);
+  }
+
+  function reset() {
+    setSeconds(0);
+    setMinutes(60);
+    setIsActive(false);
+  }
+
+  useEffect(() => {
+    let interval = null;
+    const timerbtn = document.querySelectorAll('.timer button.btns');
+    if (isActive) {
+      console.log(timerbtn[0]);
+      timerbtn[0].textContent = 'Stop';
+      interval = setInterval(() => {
+        if(seconds === 0) {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        } else if (minutes === 0 && seconds === 0){
+          clearInterval(interval);
+        } else{
+          setSeconds(seconds - 1);
+        }
+      }, 1000);
+    } else {
+      timerbtn[0].textContent = 'Start';
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, seconds, minutes]);
+
   return (
     <div className="container">
       <section className="scoreboard">
@@ -73,7 +109,7 @@ function App() {
             {/* TODO STEP 3 - We need to change the hardcoded values in these divs to accept dynamic values from our state. */}
             <div className="home__score">{homeScore}</div>
           </div>
-          <div className="timer">00:03</div>
+          <div className="timer">{minutes}:{seconds}</div>
           <div className="away">
             <h2 className="away__name">Tigers</h2>
             <div className="away__score">{awayScore}</div>
@@ -106,6 +142,13 @@ function App() {
             <ValueChanger onValueChange={toGoMinusOne} label='-1' />
             <ValueChanger onValueChange={toGoMinusFive} label='-5' />
             <ValueChanger onValueChange={toGoMinusTen} label='-10' />
+          </div>
+        </div>
+        <div className='timer'>
+          <h3>TIMER</h3>
+          <div className='btns'>
+            <ValueChanger onValueChange={toggle} label='Start' />
+            <ValueChanger onValueChange={reset} label='Reset' />
           </div>
         </div>
         <div className='ballOn'>
